@@ -71,8 +71,10 @@ class Main {
         tweenPosition.chain(tween);
         tweenPosition.start();
 
-        setTimeout(() => document.querySelector('.loading').remove(), 1000);
-        this.animation();
+        setTimeout(() => {
+            document.querySelector('.loading').remove();
+            this.animation();
+        }, 1000);
     }
 
     animation = () => {
