@@ -38,7 +38,7 @@ class Main {
         /**
          * Load Soulless
          */
-        this.scene.add(await LoadModel());
+        await LoadModel().then(soulless => this.scene.add(soulless))
 
         /**
          * Music
@@ -50,7 +50,7 @@ class Main {
             Main.sound = new Audio(listener);
             Main.sound.setBuffer(buffer);
             Main.sound.setLoop(true);
-            Main.sound.setVolume(0.75);
+            Main.sound.setVolume(0.1);
             Main.sound.play();
         });
 
@@ -59,22 +59,39 @@ class Main {
          */
         const soulless = this.scene.getObjectByName('Soulless');
 
-        soulless.position.y = -10;
+        soulless.position.z = -200;
 
-        const tweenPosition = new TWEEN.Tween(soulless.position).to({ y: -2.2 }, 2000);
-        tweenPosition.easing(TWEEN.Easing.Elastic.InOut);
+        const tweenPosition = new TWEEN.Tween(soulless.position).to({ z: 0 }, 7000).delay(2000);
+        tweenPosition.easing(TWEEN.Easing.Elastic.In);
 
-        const tween = new TWEEN.Tween(soulless.rotation).to({ y: Math.PI / 11 }, 1500).delay(3000).yoyo(true);
-        tween.easing(TWEEN.Easing.Elastic.Out);
+        const lookRight = new TWEEN.Tween(soulless.rotation).to({ y: this.rn() }, 500).delay(3000);
+        lookRight.easing(TWEEN.Easing.Exponential.InOut);
+        lookRight.onComplete(() => {
+            lookRight.to({ y: this.rn() }, 500);
+        })
 
+        const lookLeft = new TWEEN.Tween(soulless.rotation).to({ y: -this.rn() }, 1000);
+        lookLeft.easing(TWEEN.Easing.Exponential.InOut);
+        lookLeft.onComplete(() => {
+            lookLeft.to({ y: -this.rn() }, 1000);
+        })
 
-        tweenPosition.chain(tween);
+        const lookCenter = new TWEEN.Tween(soulless.rotation).to({ y: 0 }, 500);
+        lookCenter.easing(TWEEN.Easing.Exponential.InOut);
+
+        tweenPosition.chain(lookRight);
+
+        lookRight.chain(lookLeft);
+        lookLeft.chain(lookCenter);
+        lookCenter.chain(lookRight);
+
         tweenPosition.start();
+
 
         setTimeout(() => {
             document.querySelector('.loading').remove();
             this.animation();
-        }, 1000);
+        }, 100);
     }
 
     animation = () => {
@@ -83,6 +100,11 @@ class Main {
         TWEEN.update();
 
         this.renderer.render(this.scene, this.camera);
+    }
+
+    rn() {
+        const random = Math.floor(Math.random() * (11 - 8)) + 8;
+        return Math.PI / random;
     }
 }
 

@@ -8,7 +8,7 @@ import { OrbitControls } from '../../node_modules/three/examples/jsm/controls/Or
  */
 export const SetCamera = ({ renderer }) => {
     const camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 500);
-    camera.position.set(0, 0, 5)
+    camera.position.set(0, 0, 7)
     camera.lookAt(0, 0, 0)
 
     /**

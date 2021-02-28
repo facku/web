@@ -2,14 +2,14 @@
  * Imports
  */
 import {
-    Scene, Color, AmbientLight, GridHelper, AxesHelper, DirectionalLight, PointLight
+    Scene, Color, AmbientLight, GridHelper, AxesHelper, DirectionalLight, PointLight, FogExp2
 } from '../../node_modules/three/build/three.module.js'
 /**
  * Set Camera
  */
 export const SetScene = () => {
     const scene = new Scene();
-    scene.background = new Color('#cfcfcf');
+    scene.background = new Color('#0c0c0c');
 
     /**
     * Set Helpers (dev)
@@ -31,6 +31,8 @@ export const SetScene = () => {
     point.position.set(-0.6, -1.1, 2.5);
 
     scene.add(ambient, directionalLight, point);
+
+    scene.fog = new FogExp2('#0c0c0c', 0.1);
 
     return { scene };
 }
