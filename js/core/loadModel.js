@@ -20,7 +20,7 @@ export const LoadModel = () => {
 
             },
             progress => {
-                const elapsedTime = 100 * (progress.loaded / progress.total)
+                const elapsedTime = (progress.loaded / progress.total)
                 console.log(elapsedTime);
             });
     })
