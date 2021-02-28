@@ -34,6 +34,12 @@ class Main {
             this.renderer.render(this.scene, this.camera);
         })
 
+
+        /**
+         * Load Soulless
+         */
+        this.scene.add(await LoadModel());
+
         /**
          * Music
          */
@@ -49,31 +55,21 @@ class Main {
         });
 
         /**
-         * Load Soulless
-         */
-        this.scene.add(await LoadModel());
-
-
-        /**
          * Add Tween
          */
         const soulless = this.scene.getObjectByName('Soulless');
 
         soulless.position.y = -10;
 
-        this.tweenPosition = new TWEEN.Tween(soulless.position).to({ y: -2.2 }, 2000);
-        this.tweenPosition.easing(TWEEN.Easing.Elastic.InOut);
+        const tweenPosition = new TWEEN.Tween(soulless.position).to({ y: -2.2 }, 2000);
+        tweenPosition.easing(TWEEN.Easing.Elastic.InOut);
 
-        const ROTATION = Math.PI / 11;
-        const ELAPSE_TIME = 1500;
-        this.tween = new TWEEN.Tween(soulless.rotation).to({ y: ROTATION }, ELAPSE_TIME).delay(3000);
-        this.tween.easing(TWEEN.Easing.Elastic.Out);
+        const tween = new TWEEN.Tween(soulless.rotation).to({ y: Math.PI / 11 }, 1500).delay(3000).yoyo(true);
+        tween.easing(TWEEN.Easing.Elastic.Out);
 
 
-        this.tweenPosition.chain(this.tween);
-        this.tween.chain(this.tween2);
-
-        this.tweenPosition.start();
+        tweenPosition.chain(tween);
+        tweenPosition.start();
 
         setTimeout(() => document.querySelector('.loading').remove(), 1000);
         this.animation();

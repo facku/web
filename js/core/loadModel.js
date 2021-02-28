@@ -6,14 +6,23 @@ import { GLTFLoader } from "../../node_modules/three/examples/jsm/loaders/GLTFLo
  * Load Soulless Models
  * 
  */
-export const LoadModel = async () => {
+export const LoadModel = () => {
     const loader = new GLTFLoader();
 
-    const gltf = await loader.loadAsync('../models/soulless/scene.gltf');
+    return new Promise(resolve => {
+        loader.load('../models/soulless/scene.gltf',
+            gltf => {
+                gltf.scene.scale.multiplyScalar(1 / 100)
+                gltf.scene.position.set(0, -2.2, 0);
+                gltf.scene.name = "Soulless";
 
-    gltf.scene.scale.multiplyScalar(1 / 100)
-    gltf.scene.position.set(0, -2.2, 0);
-    gltf.scene.name = "Soulless";
+                return resolve(gltf.scene);
 
-    return gltf.scene;
+            },
+            progress => {
+                const elapsedTime = 100 * (progress.loaded / progress.total)
+                console.log(elapsedTime);
+            });
+    })
+
 }
